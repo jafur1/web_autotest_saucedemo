@@ -28,13 +28,13 @@ class LoginPage(MainPage):
         self.enter_login_input(username)
         self.enter_password_input(password)
         self.click_login_button()
-        # Ждем навигации после логина (либо на inventory.html, либо остаемся на странице логина с ошибкой)
         self.page.wait_for_load_state("networkidle")
 
     def error_text(self) -> str:
         return self.error_message.text_content()
 
     def is_logged_in(self) -> bool:
-        """Проверяет, залогинен ли пользователь, проверяя URL после логина"""
-        # После успешного логина URL должен содержать /inventory.html
         return "/inventory.html" in self.page.url
+
+    def is_logout_in(self) -> bool:
+        return  not "/inventory.html" in self.page.url
