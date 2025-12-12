@@ -6,12 +6,10 @@ from data.users import Users
 
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
-def pytest_runtest_makereport(item, call):
-    """Хук для создания скриншотов при ошибках тестов"""
+def pytest_runtest_makereport(item, call): #Хук для создания скриншотов при ошибках тестов
     outcome = yield
     rep = outcome.get_result()
     if rep.when == "call" and rep.failed:
-        # Получаем объект page из фикстуры
         for fixture_name in item.fixturenames:
             if 'page' in fixture_name or 'login_page' in fixture_name or 'burger_menu_page' in fixture_name:
                 try:
@@ -29,8 +27,7 @@ def pytest_runtest_makereport(item, call):
 
 
 @pytest.fixture(scope="function")
-def login_page(page):
-    """Фикстура для страницы логина без авторизации"""
+def login_page(page): #Фикстура для страницы логина без авторизации
     with allure.step("Инициализация страницы логина"):
         login_page = LoginPage(page)
         login_page.navigate("")

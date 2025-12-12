@@ -18,18 +18,18 @@ class PrimerWindowPage(MainPage):
     def all_items_locator(self):
         return self.page.locator(BurgerMenuLocator.ALL_ITEMS_BUTTON)
 
-    def open_burger_menu(self):
+    def open_burger_menu(self):  # Открыть бургер-меню
         self.burger_menu_locator.click()
-    def click_logout(self):
+    def click_logout(self):  # Выполнить выход из системы через бургер-меню
         self.open_burger_menu()
         self.logout_locator.click()
-    def click_all_items(self):
+    def click_all_items(self):  # Перейти к разделу "Все товары" через бургер-меню
         self.open_burger_menu()
         self.all_items_locator.click()
-    def click_reset_app_state(self):
+    def click_reset_app_state(self):  # Сбросить состояние приложения через бургер-меню
         self.open_burger_menu()
         self.reset_app_state_locator.click()
-    def click_about(self):
+    def click_about(self):  # Перейти к разделу "О приложении" через бургер-меню
         self.open_burger_menu()
         self.about_locator.click()
 
