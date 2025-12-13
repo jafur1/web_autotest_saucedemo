@@ -2,6 +2,7 @@ import pytest
 import allure
 from pages.login_page import LoginPage
 from pages.burger_menu_page import PrimerWindowPage
+from pages.catalog_page import CatalogPage
 from data.users import Users
 
 
@@ -48,3 +49,9 @@ def authorized_burger_menu_page(authorized_login_page):
     with allure.step("Инициализация бургер-меню для авторизованного пользователя"):
         burger_menu_page = PrimerWindowPage(authorized_login_page.page)
         return burger_menu_page
+
+@pytest.fixture(scope="function")
+def authorized_catalog_page(authorized_login_page):
+    with allure.step("Инициализация бургер-меню для авторизованного пользователя"):
+        catalog_page = CatalogPage(authorized_login_page.page)
+        return catalog_page

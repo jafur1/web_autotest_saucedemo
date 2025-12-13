@@ -1,3 +1,5 @@
+from playwright.sync_api import expect
+
 from locators.catalog_locator import CatalogLocator
 from pages.main_page import MainPage
 
@@ -5,6 +7,9 @@ class CatalogPage(MainPage):
     @property
     def table_product_locator(self):
         return self.page.locator(CatalogLocator.TABLE_PRODUCT_CARDS)
+    @property
+    def cards_locator(self):
+        return self.page.locator(CatalogLocator.CARDS_LOCATOR)
     @property
     def card_locator(self):
         return self.page.locator(CatalogLocator.CARD_LOCATOR)
@@ -18,20 +23,11 @@ class CatalogPage(MainPage):
     def open_filter_locator(self):
         return self.page.locator(CatalogLocator.OPEN_FILTER_BUTTON)
     @property
-    def sort_a_to_z_locator(self):
-        return self.page.locator(CatalogLocator.SORT_A_TO_Z)
-    @property
-    def sort_z_to_a_locator(self):
-        return self.page.locator(CatalogLocator.SORT_Z_TO_A)
-    @property
-    def sort_low_to_high_locator(self):
-        return self.page.locator(CatalogLocator.SORT_LOW_TO_HIGH)
-    @property
-    def sort_high_to_low_locator(self):
-        return self.page.locator(CatalogLocator.SORT_HIGH_TO_LOW)
-    @property
     def cart_title_locator(self):
         return self.page.locator(CatalogLocator.CART_TITLE)
+    @property
+    def count_item_button_locator(self):
+        return self.page.locator(CatalogLocator.COUNT_ITEM_BASKET)
 
     def get_product_cards_count(self) -> int:  # Получить количество карточек товаров на странице
         return self.card_locator.count()
@@ -41,7 +37,7 @@ class CatalogPage(MainPage):
 
     def get_product_name_by_index(self, index: int) -> str:  # Получить название товара по индексу
         card = self.get_product_card_by_index(index)
-        return card.locator(CatalogLocator.CART_TITLE).text_content()
+        return card.locator(CatalogLocator.CART_TITLE).text_content().strip()
 
     def get_product_price_by_index(self, index: int) -> str:  # Получить цену товара по индексу
         card = self.get_product_card_by_index(index)
@@ -96,21 +92,20 @@ class CatalogPage(MainPage):
         return remove_button.is_visible()
 
     def click_sort_a_to_z(self):  # Сортировать товары от A до Z
-        self.open_filter_locator.click()
-        self.sort_a_to_z_locator.click()
+        self.open_filter_locator.select_option(value="az")
         self.page.wait_for_load_state("networkidle")
 
     def click_sort_z_to_a(self):  # Сортировать товары от Z до A
-        self.open_filter_locator.click()
-        self.sort_z_to_a_locator.click()
+        self.open_filter_locator.select_option(value="za")
         self.page.wait_for_load_state("networkidle")
 
     def click_sort_low_to_high(self):  # Сортировать товары по цене от низкой к высокой
-        self.open_filter_locator.click()
-        self.sort_low_to_high_locator.click()
+        self.open_filter_locator.select_option(value="lohi")
         self.page.wait_for_load_state("networkidle")
 
     def click_sort_high_to_low(self):  # Сортировать товары по цене от высокой к низкой
-        self.open_filter_locator.click()
-        self.sort_high_to_low_locator.click()
+        self.open_filter_locator.select_option(value="hilo")
         self.page.wait_for_load_state("networkidle")
+
+    def count_item_basket(self) -> int: # Получение количества добавленных товаров в корзину
+        return self.count_item_button_locator.count()
