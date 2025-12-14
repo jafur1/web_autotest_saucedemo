@@ -1,5 +1,7 @@
 import pytest
 import allure
+
+from pages.basket_page import BasketPage
 from pages.login_page import LoginPage
 from pages.burger_menu_page import PrimerWindowPage
 from pages.catalog_page import CatalogPage
@@ -66,3 +68,16 @@ def authorized_catalog_page(authorized_login_page):
     with allure.step("Инициализация бургер-меню для авторизованного пользователя"):
         catalog_page = CatalogPage(authorized_login_page.page)
         return catalog_page
+
+@pytest.fixture(scope="function")
+def authorized_and_add_4_item_page(authorized_login_page):
+    with allure.step("Инициализация страницы каталога для авторизованного пользователя"):
+        catalog_page = CatalogPage(authorized_login_page.page)
+    for i in range(4):
+        with allure.step(f"Добавление {i} товара в корзину"):
+            catalog_page.click_add_to_cart_by_index(i)
+    with allure.step("Переход на страницу корзины"):
+        catalog_page.click_cart_link()
+    with allure.step("Инициализация страницы корзины"):
+        basket_page = BasketPage(catalog_page.page)
+        return basket_page

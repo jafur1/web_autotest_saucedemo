@@ -26,6 +26,9 @@ class CatalogPage(MainPage):
     @property
     def count_item_button_locator(self):
         return self.page.locator(CatalogLocator.COUNT_ITEM_BASKET)
+    @property
+    def cart_link_locator(self):
+        return self.page.locator(CatalogLocator.CART_LINK)
 
     def get_product_cards_count(self) -> int:  # Получить количество карточек товаров на странице
         return self.card_locator.count()
@@ -98,11 +101,11 @@ class CatalogPage(MainPage):
         self.page.wait_for_load_state("networkidle")
 
     def click_sort_low_to_high(self):  # Сортировать товары по цене от низкой к высокой
-        self.open_filter_locator.select_option(value="lohi")
+        self.open_filter_locator.select_option(value="za")
         self.page.wait_for_load_state("networkidle")
 
     def click_sort_high_to_low(self):  # Сортировать товары по цене от высокой к низкой
-        self.open_filter_locator.select_option(value="hilo")
+        self.open_filter_locator.select_option(value="za")
         self.page.wait_for_load_state("networkidle")
 
     def get_cart_badge_text(self): # Получение текста из бейджа корзины
@@ -114,3 +117,7 @@ class CatalogPage(MainPage):
             return int(badge_text) if badge_text else 0
         except:
             return 0
+
+    def click_cart_link(self):  # Перейти на страницу корзины
+        self.cart_link_locator.click()
+        self.page.wait_for_load_state("networkidle")
