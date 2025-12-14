@@ -76,9 +76,12 @@ class TestAddAndDeleteBasket:
     @pytest.mark.positive
     @pytest.mark.smoke
     def test_add_1_item_to_basket(self, authorized_catalog_page):
-        authorized_catalog_page.click_add_to_cart_by_index(1)
-        item = authorized_catalog_page.count_item_basket()
-        assert item == 1, f"Был добавлен один товар, а корзина посчитала {item}"
+        with allure.step("Добавление товара с индексом 1"):
+            authorized_catalog_page.click_add_to_cart_by_index(1)
+        with allure.step("Получение количества добавленных товаров в корзину и запись в переменную"):
+            item = authorized_catalog_page.count_item_basket()
+        with allure.step("Сравнение ранее созданной переменной с актуальным значением количества товаров в корзине"):
+            assert item == 1, f"Был добавлен один товар, а корзина посчитала {item}"
 
     @allure.story("Работа с добавление и удаление товаров")
     @allure.title("Добавление 3 товара в корзину")
@@ -86,13 +89,20 @@ class TestAddAndDeleteBasket:
     @pytest.mark.positive
     @pytest.mark.regression
     def test_add_3_item_to_basket(self, authorized_catalog_page):
-        authorized_catalog_page.click_add_to_cart_by_index(1)
-        name_2_item = authorized_catalog_page.get_product_name_by_index(2)
-        name_3_item = authorized_catalog_page.get_product_name_by_index(3)
-        authorized_catalog_page.click_add_to_cart_by_name(name_2_item)
-        authorized_catalog_page.click_add_to_cart_by_name(name_3_item)
-        item = authorized_catalog_page.count_item_basket()
-        assert item == 3, f"Было добавлено 3 товара, а корзина посчитала {item}"
+        with allure.step("Добавление первого товара с индексом 1"):
+            authorized_catalog_page.click_add_to_cart_by_index(1)
+        with allure.step("Получение имени второго товара"):
+            name_2_item = authorized_catalog_page.get_product_name_by_index(2)
+        with allure.step("Получение имени третьего товара"):
+            name_3_item = authorized_catalog_page.get_product_name_by_index(3)
+        with allure.step("Добавление второго товара по имени"):
+            authorized_catalog_page.click_add_to_cart_by_name(name_2_item)
+        with allure.step("Добавление третьего товара по имени"):
+            authorized_catalog_page.click_add_to_cart_by_name(name_3_item)
+        with allure.step("Получение количества добавленных товаров в корзину"):
+            item = authorized_catalog_page.count_item_basket()
+        with allure.step("Проверка количества товаров в корзине"):
+            assert item == 3, f"Было добавлено 3 товара, а корзина посчитала {item}"
 
     @allure.story("Работа с добавление и удаление товаров")
     @allure.title("Добавление 2 товара в корзину и удаление 1 товара из корзины")
@@ -100,13 +110,20 @@ class TestAddAndDeleteBasket:
     @pytest.mark.positive
     @pytest.mark.smoke
     def test_delete_item_basket(self, authorized_catalog_page):
-        authorized_catalog_page.click_add_to_cart_by_index(1)
-        authorized_catalog_page.click_add_to_cart_by_index(2)
-        item = authorized_catalog_page.count_item_basket()
-        assert item == 2, f"Было добавлено 2 товара, а корзина посчитала {item}"
-        authorized_catalog_page.click_remove_from_cart_by_index(1)
-        item_new = authorized_catalog_page.count_item_basket()
-        assert item_new == 1, f"Было добавлено 2 товара и 1 товар удалён , а корзина посчитала {item_new}"
+        with allure.step("Добавление первого товара с индексом 1"):
+            authorized_catalog_page.click_add_to_cart_by_index(1)
+        with allure.step("Добавление второго товара с индексом 2"):
+            authorized_catalog_page.click_add_to_cart_by_index(2)
+        with allure.step("Получение количества добавленных товаров в корзину"):
+            item = authorized_catalog_page.count_item_basket()
+        with allure.step("Проверка количества товаров в корзине после добавления"):
+            assert item == 2, f"Было добавлено 2 товара, а корзина посчитала {item}"
+        with allure.step("Удаление первого товара из корзины"):
+            authorized_catalog_page.click_remove_from_cart_by_index(1)
+        with allure.step("Получение количества товаров в корзине после удаления"):
+            item_new = authorized_catalog_page.count_item_basket()
+        with allure.step("Проверка количества товаров в корзине после удаления"):
+            assert item_new == 1, f"Было добавлено 2 товара и 1 товар удалён , а корзина посчитала {item_new}"
 
 
 
