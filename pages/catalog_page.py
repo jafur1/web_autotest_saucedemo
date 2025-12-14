@@ -1,5 +1,3 @@
-from playwright.sync_api import expect
-
 from locators.catalog_locator import CatalogLocator
 from pages.main_page import MainPage
 
@@ -107,5 +105,12 @@ class CatalogPage(MainPage):
         self.open_filter_locator.select_option(value="hilo")
         self.page.wait_for_load_state("networkidle")
 
+    def get_cart_badge_text(self): # Получение текста из бейджа корзины
+        return self.count_item_button_locator.text_content()
+
     def count_item_basket(self) -> int: # Получение количества добавленных товаров в корзину
-        return self.count_item_button_locator.count()
+        try:
+            badge_text = self.get_cart_badge_text()
+            return int(badge_text) if badge_text else 0
+        except:
+            return 0

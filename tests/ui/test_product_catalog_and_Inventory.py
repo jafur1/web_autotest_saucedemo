@@ -66,4 +66,47 @@ class TestCatalog:
         with allure.step("Проверка изменения порядка товаров"):
             assert prase_before != prase_after, f"Кнопка сортировки не работает"
 
-# реализовать class TestBasket:
+@allure.epic("Работа с корзиной из окна каталога товаров")
+@allure.feature("Добавление и удаление товаров без перехода в корзину")
+class TestAddAndDeleteBasket:
+
+    @allure.story("Работа с добавление и удаление товаров")
+    @allure.title("Добавление 1 товара в корзину")
+    @allure.severity(allure.severity_level.NORMAL)
+    @pytest.mark.positive
+    @pytest.mark.smoke
+    def test_add_1_item_to_basket(self, authorized_catalog_page):
+        authorized_catalog_page.click_add_to_cart_by_index(1)
+        item = authorized_catalog_page.count_item_basket()
+        assert item == 1, f"Был добавлен один товар, а корзина посчитала {item}"
+
+    @allure.story("Работа с добавление и удаление товаров")
+    @allure.title("Добавление 3 товара в корзину")
+    @allure.severity(allure.severity_level.NORMAL)
+    @pytest.mark.positive
+    @pytest.mark.regression
+    def test_add_3_item_to_basket(self, authorized_catalog_page):
+        authorized_catalog_page.click_add_to_cart_by_index(1)
+        name_2_item = authorized_catalog_page.get_product_name_by_index(2)
+        name_3_item = authorized_catalog_page.get_product_name_by_index(3)
+        authorized_catalog_page.click_add_to_cart_by_name(name_2_item)
+        authorized_catalog_page.click_add_to_cart_by_name(name_3_item)
+        item = authorized_catalog_page.count_item_basket()
+        assert item == 3, f"Было добавлено 3 товара, а корзина посчитала {item}"
+
+    @allure.story("Работа с добавление и удаление товаров")
+    @allure.title("Добавление 2 товара в корзину и удаление 1 товара из корзины")
+    @allure.severity(allure.severity_level.NORMAL)
+    @pytest.mark.positive
+    @pytest.mark.smoke
+    def test_delete_item_basket(self, authorized_catalog_page):
+        authorized_catalog_page.click_add_to_cart_by_index(1)
+        authorized_catalog_page.click_add_to_cart_by_index(2)
+        item = authorized_catalog_page.count_item_basket()
+        assert item == 2, f"Было добавлено 2 товара, а корзина посчитала {item}"
+        authorized_catalog_page.click_remove_from_cart_by_index(1)
+        item_new = authorized_catalog_page.count_item_basket()
+        assert item_new == 1, f"Было добавлено 2 товара и 1 товар удалён , а корзина посчитала {item_new}"
+
+
+

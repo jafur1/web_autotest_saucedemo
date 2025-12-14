@@ -5,6 +5,17 @@ from pages.burger_menu_page import PrimerWindowPage
 from pages.catalog_page import CatalogPage
 from data.users import Users
 
+@pytest.fixture(scope="session")
+def browser_context_args(browser_context_args): # Настройки для контекста браузера
+    return {
+        **browser_context_args,
+        "viewport": {"width": 1920, "height": 1080},
+        "ignore_https_errors": True,
+        "java_script_enabled": True,
+        "has_touch": False,
+        "locale": "ru-RU",
+        "timezone_id": "Europe/Moscow",
+    }
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call): #Хук для создания скриншотов при ошибках тестов

@@ -6,5 +6,5 @@ class CatalogLocator:
     REMOVE_BUTTON = '#remove-sauce-labs-fleece-jacket'
     OPEN_FILTER_BUTTON = '[data-test="product-sort-container"]'
     CART_TITLE = '[data-test="inventory-item-name"]'
-    COUNT_ITEM_BASKET = '[data-test="inventory-item-count"]'
+    COUNT_ITEM_BASKET = '[data-test="shopping-cart-badge"]'
     
